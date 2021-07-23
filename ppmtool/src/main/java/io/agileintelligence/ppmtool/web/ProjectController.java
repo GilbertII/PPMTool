@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.services.MapValidationErrorService;
 import io.agileintelligence.ppmtool.services.ProjectService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,30 +31,22 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private MapValidationErrorService errorService;
+
     @PostMapping("")
     public ResponseEntity<? extends Object> createNewProject(@Valid @RequestBody Project project,
             BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
+        ResponseEntity<?> errorResponse = errorService.mapValidationService(bindingResult);
+        if (errorResponse != null) {
 
-            Map<String, String> errors = handleValidationExceptions(bindingResult.getFieldErrors());
-
-            return new ResponseEntity<Map<String, String>>(errors, HttpStatus.BAD_REQUEST);
+            return errorResponse;
+        } else {
+            Project projectResult = projectService.saveOrUpdateProject(project);
+            return new ResponseEntity<Project>(projectResult, HttpStatus.CREATED);
         }
 
-        projectService.saveOrUpdateProject(project);
-        return new ResponseEntity<Project>(project, HttpStatus.CREATED);
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationExceptions(List<FieldError> ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 
 }
