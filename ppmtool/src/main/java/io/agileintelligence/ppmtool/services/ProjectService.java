@@ -40,8 +40,15 @@ public class ProjectService {
 
     }
 
-    public List<Project> getAllProjectListService() {
-        return (List<Project>) projectRepository.findAll();
+    public Iterable<Project> findAllProjectService() {
+
+        Iterable<Project> iterableProject = projectRepository.findAll();
+
+        if (!iterableProject.iterator().hasNext()) {
+            throw new ProjectIdException("No data recorded");
+        }
+
+        return projectRepository.findAll();
     }
 
 }
