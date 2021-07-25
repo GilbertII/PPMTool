@@ -28,6 +28,18 @@ public class ProjectService {
 
     }
 
+    public Project findByProjectIdentifierService(String projectIdentifier) {
+
+        Project project = projectRepository.findByProjectIdentifier(projectIdentifier);
+
+        if (project == null) {
+            throw new ProjectIdException("Project ID '" + projectIdentifier.toUpperCase() + "' is doesn't exist!");
+        }
+
+        return project;
+
+    }
+
     public List<Project> getAllProjectListService() {
         return (List<Project>) projectRepository.findAll();
     }
