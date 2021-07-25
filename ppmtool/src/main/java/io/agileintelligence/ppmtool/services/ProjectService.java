@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.exceptions.ProjectIdException;
 import io.agileintelligence.ppmtool.repositories.ProjectRepository;
 
 import java.util.List;
@@ -15,11 +16,19 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     public Project saveOrUpdateProject(Project project) {
+        try {
 
-        return projectRepository.save(project);
+            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            return projectRepository.save(project);
+
+        } catch (Exception e) {
+            throw new ProjectIdException(
+                    "Project ID '" + project.getProjectIdentifier().toUpperCase() + "' is already exist!");
+        }
+
     }
 
-    public List<Project> getAllProjectListService(){
+    public List<Project> getAllProjectListService() {
         return (List<Project>) projectRepository.findAll();
     }
 
