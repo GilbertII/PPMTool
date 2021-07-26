@@ -1,5 +1,6 @@
 package io.agileintelligence.ppmtool.web;
 
+import java.util.List;
 import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.services.MapValidationErrorService;
 import io.agileintelligence.ppmtool.services.ProjectService;
@@ -54,6 +55,14 @@ public class ProjectController {
         projectService.deleteProjectByIdentifierService(projectIdentifier);
 
         return new ResponseEntity<String>("Project with ID: '" + projectIdentifier + "' was deleted!", HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/bulk_delete/{projectIdentifiers}")
+    public ResponseEntity<?> deleteProjects(@PathVariable List<String> projectIdentifiers) {
+        projectService.deleteProjectsByIndentifiersService(projectIdentifiers);
+
+        return new ResponseEntity<String>("Project with IDs: '" + projectIdentifiers.toString() + "' was deleted!", HttpStatus.OK);
 
     }
 

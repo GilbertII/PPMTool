@@ -6,6 +6,9 @@ import io.agileintelligence.ppmtool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ProjectService {
 
@@ -56,6 +59,26 @@ public class ProjectService {
         } else {
             projectRepository.delete(project);
         }
+
+    }
+
+    public void deleteProjectsByIndentifiersService(List<String> projectIndentifiers) {
+
+        List<Project> projects = projectRepository.findAllByProjectIdentifiers(projectIndentifiers);
+
+        if (projects.isEmpty()) {
+            throw new ProjectIdException("Can't delete project identifier '" + projectIndentifiers.toString() + "' does not exist!");
+        }
+
+        projects
+                .stream()
+                .map(Project::getProjectIdentifier)
+                .forEach(System.out::println);
+
+        projectRepository.deleteAllByProjectIdentifier(projects
+                .stream()
+                .map(Project::getProjectIdentifier)
+                .collect(Collectors.toList()));
 
     }
 
