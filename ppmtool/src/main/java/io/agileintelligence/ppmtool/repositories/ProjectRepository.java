@@ -1,7 +1,7 @@
 package io.agileintelligence.ppmtool.repositories;
 
-import org.springframework.data.repository.CrudRepository;
 import io.agileintelligence.ppmtool.domain.Project;
+import org.springframework.data.repository.CrudRepository;
 
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 

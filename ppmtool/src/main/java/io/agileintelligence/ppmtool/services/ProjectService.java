@@ -1,13 +1,10 @@
 package io.agileintelligence.ppmtool.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.exceptions.ProjectIdException;
 import io.agileintelligence.ppmtool.repositories.ProjectRepository;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ProjectService {
@@ -49,6 +46,17 @@ public class ProjectService {
         }
 
         return projectRepository.findAll();
+    }
+
+    public void deleteProjectByIdentifierService(String projectIdentifier) {
+        Project project = projectRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
+
+        if (project == null) {
+            throw new ProjectIdException("Can't delete project identifier '" + projectIdentifier + "' does not exist!");
+        } else {
+            projectRepository.delete(project);
+        }
+
     }
 
 }
