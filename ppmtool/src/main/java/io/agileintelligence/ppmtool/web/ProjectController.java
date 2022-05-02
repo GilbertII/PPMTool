@@ -4,6 +4,8 @@ import java.util.List;
 import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.services.MapValidationErrorService;
 import io.agileintelligence.ppmtool.services.ProjectService;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Slf4j
+@Data
 @RestController
 @RequestMapping("/api/project")
 public class ProjectController {
 
-    @Autowired
-    private ProjectService projectService;
-
-    @Autowired
-    private MapValidationErrorService errorService;
+    private final ProjectService projectService;
+    private final MapValidationErrorService errorService;
 
     @PostMapping("")
     public ResponseEntity<? extends Object> createNewProject(@Valid @RequestBody Project project,
