@@ -1,11 +1,19 @@
 package io.agileintelligence.ppmtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -33,9 +41,11 @@ public class Project {
     private String description;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonProperty(value = "start_date")
     private Date dateStart;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonProperty(value = "end_date")
     private Date dateEnd;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
