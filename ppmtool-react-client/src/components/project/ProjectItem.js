@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag, faEdit, faRemove } from "@fortawesome/free-solid-svg-icons";
 
